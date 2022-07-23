@@ -1,0 +1,25 @@
+local RunService = game:GetService("RunService")
+local StarterGui = game:GetService("StarterGui")
+local Players = game:GetService("Players")
+
+coroutine.resume(coroutine.create(function()
+    -- Let me know if this function causes performance issues (it shouldn't since it's in a separate thread)
+    RunService.Stepped:Connect(function()
+        pcall(function()
+            -- These variables will nil when you reset so we put them here.
+            local LocalPlayer = Players.LocalPlayer
+            local character = LocalPlayer.Character
+            local PlayerGui = LocalPlayer.PlayerGui
+            if (character:FindFirstChild("Shotty") or character:FindFirstChild("Glock") or character:FindFirstChild("Sawed Off") or character:FindFirstChild("Uzi")) then
+                if (PlayerGui:FindFirstChild("ScreenGui")) then
+                    PlayerGui:FindFirstChild("ScreenGui"):Destroy()
+                end
+            else 
+                if (not PlayerGui:FindFirstChild("ScreenGui")) then
+                    local ScreenGuiCpy = StarterGui:FindFirstChild("ScreenGui"):Clone()
+                    ScreenGuiCpy.Parent = PlayerGui
+                end
+            end
+        end)
+    end)
+end))
